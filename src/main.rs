@@ -34,5 +34,4 @@ pub fn init(root_id: &str) {
 }
 
 fn main() {
-    yew::Renderer::<App>::new().render();
 }
