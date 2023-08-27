@@ -8,9 +8,17 @@ Build it with
 trunk build
 ```
 
-Then run an http server from the example directory
+Then run a http server from the example directory
 
 ```sh
 cd example
 python3 -m http.server
+```
+
+
+Or try it out with react
+
+```sh
+cd react-rust-web-components
+npm start
 ```
