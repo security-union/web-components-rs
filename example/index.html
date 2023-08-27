@@ -1,0 +1,17 @@
+<!DOCTYPE html><html>
+<head>
+	<meta charset="utf-8">
+	<title>Custom Yew Web Component</title>
+	<link rel="preload" href="/web-components-rs_bg.wasm" as="fetch" type="application/wasm" crossorigin="">
+	<link rel="modulepreload" href="/web-components-rs.js">
+	<script type="module" src="/custom-yew-component.js" defer></script>
+	<script src="/custom-component.js" defer></script>
+</head>
+<body>
+	<h1>YO</h1>
+	<div id="yew-root">
+		<custom-yew-component></custom-yew-component>
+	</div>
+	<custom-component></custom-component>
+</body>
+</html>

@@ -1,0 +1,7 @@
+[build]
+filehash = false
+
+[[hooks]]
+stage = "post_build"
+command = "sh"
+command_arguments = ["post_build.sh"]
