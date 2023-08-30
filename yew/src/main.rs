@@ -1,5 +1,5 @@
-use wasm_bindgen::{prelude::wasm_bindgen, JsCast};
-use web_sys::{window, HtmlElement};
+use wasm_bindgen::prelude::wasm_bindgen;
+use web_sys::window;
 use yew::prelude::*;
 
 #[function_component]
@@ -23,7 +23,11 @@ fn App() -> Html {
 
 #[wasm_bindgen]
 pub fn init() {
-    let ele = window().unwrap().document().unwrap().get_elements_by_tag_name("CUSTOM-YEW-COMPONENT");
+    let ele = window()
+        .unwrap()
+        .document()
+        .unwrap()
+        .get_elements_by_tag_name("CUSTOM-YEW-COMPONENT");
     // TODO: How can we support more than one?
     let ele = ele.get_with_index(0).unwrap();
     // let ele = ele
@@ -32,5 +36,4 @@ pub fn init() {
     yew::Renderer::<App>::with_root(ele).render();
 }
 
-fn main() {
-}
+fn main() {}
