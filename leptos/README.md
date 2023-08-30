@@ -1,6 +1,6 @@
-# Rust Web Components - Yew
+# Rust Web Components - Leptos
 
-This is an example of rust web components using a simple yew component.
+This is an example of rust web components using a simple leptos component.
 
 Build it with
 
