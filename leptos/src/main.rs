@@ -1,60 +1,55 @@
 use leptos::*;
+use leptos_dom::Mountable;
 use wasm_bindgen::prelude::*;
-use web_sys::HtmlElement;
+use web_sys::{HtmlElement, ShadowRoot};
 
 #[wasm_bindgen]
-pub fn init(root_id: &str) {
-    let document = document();
-    let root = if let Some(root) = document.get_element_by_id(root_id) {
-        root
-    } else {
-        let root = document.create_element("div").unwrap();
-        root.set_id(root_id);
-        document.body().unwrap().append_child(&root).unwrap();
-        root
-    };
-    let root = root.dyn_into::<HtmlElement>().expect("Root element is not an HtmlElement");
-    mount_to(root, |cx| view!(cx, <App />));
+pub fn init() {
+    let ele = document().get_elements_by_tag_name("CUSTOM-LEPTOS-COMPONENT");
+    // TODO: How can we support more than one?
+    let ele = ele.get_with_index(0).unwrap();
+    let ele = ele
+        .dyn_into::<HtmlElement>()
+        .expect("Ele is not an HtmlElement");
+    let shadow_root = ele.shadow_root().unwrap();
+    create_app(shadow_root, |cx| view! { cx, <App/> });
 }
 
-// The #[component] macro marks a function as a reusable component
-// Components are the building blocks of your user interface
-// They define a reusable unit of behavior
+pub fn create_app<F, N>(shadow_root: ShadowRoot, f: F)
+where
+    F: FnOnce(Scope) -> N + 'static,
+    N: IntoView,
+{
+    let runtime: RuntimeId = leptos_reactive::create_runtime();
+    let disposer = leptos_reactive::create_scope(runtime, move |cx| {
+        let node = f(cx).into_view(cx);
+
+        shadow_root
+            .append_child(&node.get_mountable_node())
+            .unwrap();
+
+        std::mem::forget(node);
+    });
+
+    std::mem::forget(disposer);
+}
+
 #[component]
 fn App(cx: Scope) -> impl IntoView {
-    // here we create a reactive signal
-    // and get a (getter, setter) pair
-    // signals are the basic unit of change in the framework
-    // we'll talk more about them later
     let (count, set_count) = create_signal(cx, 0);
-
-    // the `view` macro is how we define the user interface
-    // it uses an HTML-like format that can accept certain Rust values
     view! { cx,
-        <button
-            // on:click will run whenever the `click` event fires
-            // every event handler is defined as `on:{eventname}`
+        <button on:click=move |_| {
+            set_count.update(|n| *n += 1);
+        }>
 
-            // we're able to move `set_count` into the closure
-            // because signals are Copy and 'static
-            on:click=move |_| {
-                set_count.update(|n| *n += 1);
-            }
-        >
-            // text nodes in RSX should be wrapped in quotes,
-            // like a normal Rust string
             "Click me"
         </button>
         <p>
             <strong>"Reactive: "</strong>
-            // you can insert Rust expressions as values in the DOM
-            // by wrapping them in curly braces
-            // if you pass in a function, it will reactively update
             {move || count.get()}
         </p>
         <p>
             <strong>"Reactive shorthand: "</strong>
-            // signals are functions, so we can remove the wrapping closure
             {count}
         </p>
     }

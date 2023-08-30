@@ -7,5 +7,7 @@ edition = "2021"
 
 [dependencies]
 leptos = { version = "0.4.10", features = ["csr"] }
+leptos_dom = { version = "0.4.10", features = ["csr", "hydrate"] }
+leptos_reactive = "0.4.10"
 wasm-bindgen = "0.2.87"
 web-sys = { version = "0.3.64", features = ["HtmlElement", "Element"] }

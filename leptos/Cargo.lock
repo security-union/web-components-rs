@@ -1850,6 +1850,8 @@ name = "web-components-rs"
 version = "0.1.0"
 dependencies = [
  "leptos",
+ "leptos_dom",
+ "leptos_reactive",
  "wasm-bindgen",
  "web-sys",
 ]
